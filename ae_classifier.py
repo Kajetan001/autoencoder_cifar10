@@ -6,7 +6,7 @@ import numpy as np
 def train_autoencoder_for_class(autoencoder, class_data, epochs=50, batch_size=256):
     autoencoder.fit(class_data, class_data, epochs=epochs, batch_size=batch_size, shuffle=True, verbose=1)
 
-# klasyfikacja obraz na podstawie błędu rekonstrukcji autoenkoderów
+# klasyfikacja obrazów na podstawie błędu rekonstrukcji autoenkoderów
 # reduce_retracing=True: optymalizacja dla tensorflow w celu zmniejszenia liczby ponownych śladów funkcji
 # wcześniej wyskakiwał warning tego dotyczący
 @tf.function(reduce_retracing=True)
