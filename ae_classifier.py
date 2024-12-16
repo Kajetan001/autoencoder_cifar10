@@ -28,7 +28,7 @@ def classify_image(image, autoencoders):
 def train_all_autoencoders(X_train, y_train, autoencoders):
     # iteracja po indeksach klas oraz odpowiadających im autoenkoderach
     for i, ae in enumerate(autoencoders):
-        print(f"Training autoencoder for class {i}")
+        print(f"Trenowanie autoenkodera dla klasy {i}")
         class_data = X_train[y_train.flatten() == i]
         train_autoencoder_for_class(ae, class_data)
     
@@ -41,7 +41,7 @@ def make_class_predictions(X_test, autoencoders):
         pred_class = classify_image(img, autoencoders)
         y_pred.append(pred_class.numpy())  # konwersja tensora na numpy dla dalszego przetwarzania
         if idx % 100 == 0:
-            print(f"Processed {idx} images")
+            print(f"Przetworzono {idx} obrazów")
 
     y_pred = np.array(y_pred) # konwersja listy z przewidywanymi klasami na tablicę numpy
     return y_pred
