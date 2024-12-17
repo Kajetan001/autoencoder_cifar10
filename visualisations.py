@@ -8,6 +8,7 @@ def make_training_and_validation_loss_graph(autoencoder):
     plt.figure(figsize=(10, 6))
     plt.plot(autoencoder.history['loss'], label='Strata treningowa', color='blue', linewidth=2)
     plt.plot(autoencoder.history['val_loss'], label='Strata walidacyjna', color='orange', linestyle='--', linewidth=2)
+    
     # tytuł i etykiety
     plt.title("Strata treningowa vs. strata walidacyjna", fontsize=16)
     plt.xlabel("Epoki", fontsize=14)
@@ -52,16 +53,18 @@ def make_confusion_matrix(y_test, y_pred, class_names, title='Macierz Pomyłek')
     cm = confusion_matrix(y_test, y_pred)
     plt.figure(figsize=(10, 8))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=class_names, yticklabels=class_names)
+    
     # etykiety i tytuł
     plt.xlabel('Przewidziana klasa')
     plt.ylabel('Faktyczna klasa')
     plt.title(title)
+    
     # obrót etykiet dla czytelności
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout() 
     plt.show()
 
-# classification report
+# raport klasyfikacyjny porównujący przewidziane etykiety klas z faktycznymi
 def make_classification_report(y_test, y_pred):
     report = classification_report(y_test, y_pred, target_names=[f'Class {i}' for i in range(10)])
     print("Classification Report:\n", report)
