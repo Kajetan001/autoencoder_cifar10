@@ -48,7 +48,7 @@ def compare_original_and_reconstructed_images(X_test, y_test, predicted, class_n
     plt.tight_layout()
     plt.show()
 
-# rysowanie macierzy pomyłek dla
+# wykres - macierz pomyłek dla klasyfikatora
 def make_confusion_matrix(y_test, y_pred, class_names, title='Macierz Pomyłek'):
     cm = confusion_matrix(y_test, y_pred)
     plt.figure(figsize=(10, 8))
@@ -64,7 +64,7 @@ def make_confusion_matrix(y_test, y_pred, class_names, title='Macierz Pomyłek')
     plt.tight_layout() 
     plt.show()
 
-# raport klasyfikacyjny porównujący przewidziane etykiety klas z faktycznymi
+# wypisanie w konsoli raportu klasyfikacyjnego porównującego przewidziane etykiety klas z faktycznymi
 def make_classification_report(y_test, y_pred):
     report = classification_report(y_test, y_pred, target_names=[f'Class {i}' for i in range(10)])
     print("Classification Report:\n", report)
