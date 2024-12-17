@@ -3,14 +3,8 @@ from keras.layers import Conv2D, MaxPooling2D, UpSampling2D, BatchNormalization,
 from keras.models import Model
 
 
-# załadowanie i wstępne przetwarzanie zbiór danych CIFAR-10
+# załadowanie i wstępne przetwarzanie zbioru danych CIFAR-10
 def load_and_preprocess():
-    # (X_train, _), (X_test, _) = cifar10.load_data()
-    # X_train = X_train.astype('float32') / 255  # normalizacja do zakresu [0, 1]
-    # X_test = X_test.astype('float32') / 255
-    # X_train = X_train.reshape(len(X_train), X_train.shape[1], X_train.shape[2], 3)  # zmiana kształtu dla conv2d
-    # X_test = X_test.reshape(len(X_test), X_test.shape[1], X_test.shape[2], 3)  # zmiana kształtu dla conv2d
-
     (X_train, y_train), (X_test, y_test) = cifar10.load_data()
     X_train = X_train.astype('float32') / 255
     X_test = X_test.astype('float32') / 255 
@@ -18,10 +12,12 @@ def load_and_preprocess():
     return X_test, X_train, y_test, y_train
 
 # encoder
+# trzy warstwy konwolucyjne zmniejszające stopniowo wymiary przestrzenne obrazów
 def encode(input_img):
-    # Encoder
     x = Conv2D(32, (3, 3), padding='same')(input_img)
+    # BatchNormalization normalizuje wariancję i średnią każderj warstwy dla przyśpieszenia procesu uczenia
     x = BatchNormalization()(x)
+    # LeakuReLU zapobiega "śmierci neuronów" zastępując wartości zerowe bardzo niskimi wartościami
     x = LeakyReLU()(x)
     x = MaxPooling2D((2, 2), padding='same')(x)
     
@@ -38,8 +34,8 @@ def encode(input_img):
     return encoded
 
 # decoder
+# odwrócenie procesu kodowania, trzy warstwy kowolucyjne
 def decode(encoded):
-    # Decoder
     x = Conv2D(8, (3, 3), padding='same')(encoded)
     x = BatchNormalization()(x)
     x = LeakyReLU()(x)
@@ -59,7 +55,7 @@ def decode(encoded):
 
     return decoded
 
-# kompilacja autoenkodera
+# wywoładnie encodera, decodera, kompilacja autoenkodera
 def build_autoencoder(input_img):
     encoded = encode(input_img)
     decoded = decode(encoded)
@@ -70,9 +66,9 @@ def build_autoencoder(input_img):
 
 def fit_and_predict_autoencoder(autoencoder, X_test, X_train, epochs=50):
     # trenowanie autoenkodera
-    history = autoencoder.fit(X_train, X_train, epochs=epochs, batch_size=256, shuffle=True, validation_data=(X_test, X_test))
+    autoencoder = autoencoder.fit(X_train, X_train, epochs=epochs, batch_size=256, shuffle=True, validation_data=(X_test, X_test))
 
-    # wizualizacja oryginalnych i zrekonstruowanych obrazów
+    # predykcja obrazów dodkonana na testowym zbiorze danych
     predicted = autoencoder.predict(X_test)
 
-    return history, predicted
+    return autoencoder, predicted
