@@ -15,7 +15,7 @@ def load_and_preprocess():
 # trzy warstwy konwolucyjne zmniejszające stopniowo wymiary przestrzenne obrazów
 def encode(input_img):
     x = Conv2D(32, (3, 3), padding='same')(input_img)
-    # BatchNormalization normalizuje wariancję i średnią każderj warstwy dla przyśpieszenia procesu uczenia
+    # BatchNormalization normalizuje wariancję i średnią każdej warstwy dla przyśpieszenia procesu uczenia
     x = BatchNormalization()(x)
     # LeakuReLU zapobiega "śmierci neuronów" zastępując wartości zerowe bardzo niskimi wartościami
     x = LeakyReLU()(x)
@@ -34,7 +34,7 @@ def encode(input_img):
     return encoded
 
 # decoder
-# odwrócenie procesu kodowania, trzy warstwy kowolucyjne
+# odwrócenie procesu kodowania, trzy warstwy konwolucyjne
 def decode(encoded):
     x = Conv2D(8, (3, 3), padding='same')(encoded)
     x = BatchNormalization()(x)
